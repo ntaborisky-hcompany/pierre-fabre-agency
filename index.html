@@ -3,173 +3,204 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AgenceLocal — Translation Portal</title>
+  <title>AgenceLocal — Portail de Traduction</title>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    :root {
-      --bg: #0a0a0a; --surface: #141414; --surface2: #1e1e1e; --surface3: #2a2a2a;
-      --border: #2e2e2e; --text: #f0f0f0; --muted: #888;
-      --accent: #3b82f6; --accent2: #60a5fa;
-      --green: #22c55e; --yellow: #f59e0b; --red: #ef4444; --purple: #a855f7;
-    }
-    body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 13px; min-height: 100vh; display: flex; flex-direction: column; }
-    header { display: flex; align-items: center; gap: 14px; padding: 0 28px; height: 56px; background: var(--surface); border-bottom: 1px solid var(--border); flex-shrink: 0; }
-    .logo { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 16px; letter-spacing: -0.5px; }
-    .logo-mark { width: 32px; height: 32px; background: var(--accent); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 900; color: #fff; }
-    .logo-sub { font-size: 11px; font-weight: 400; color: var(--muted); margin-left: 2px; }
-    .header-actions { margin-left: auto; display: flex; align-items: center; gap: 10px; }
-    .btn-new { background: var(--accent); color: #fff; border: none; padding: 8px 16px; border-radius: 8px; font-size: 12px; font-weight: 700; cursor: pointer; transition: all 0.15s; }
-    .btn-new:hover { background: var(--accent2); }
-    .avatar { width: 32px; height: 32px; border-radius: 50%; background: linear-gradient(135deg,#3b82f6,#60a5fa); display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; color: #fff; }
+    body { background: #e8e8e8; color: #222; font-family: Arial, Tahoma, Verdana, sans-serif; font-size: 12px; min-height: 100vh; display: flex; flex-direction: column; }
 
-    .page { max-width: 1100px; margin: 0 auto; padding: 32px 28px; width: 100%; }
-    .page-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 28px; }
-    .page-title { font-size: 22px; font-weight: 800; letter-spacing: -0.5px; }
-    .page-subtitle { color: var(--muted); font-size: 13px; margin-top: 4px; }
+    .top-banner { background: #2c6da4; height: 6px; flex-shrink: 0; }
 
-    .stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 28px; }
-    .stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px 18px; }
-    .stat-val { font-size: 26px; font-weight: 800; letter-spacing: -1px; margin-bottom: 4px; }
-    .stat-label { font-size: 11px; color: var(--muted); }
+    header { background: #f5f5f5; border-bottom: 2px solid #2c6da4; padding: 0 16px; height: 52px; display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
+    .logo { display: flex; align-items: center; gap: 8px; }
+    .logo-mark { width: 32px; height: 32px; background: #2c6da4; border-radius: 2px; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 11px; font-weight: bold; }
+    .logo-text { font-size: 14px; font-weight: bold; color: #2c6da4; }
+    .logo-sub { font-size: 11px; color: #777; }
+    .header-right { margin-left: auto; display: flex; align-items: center; gap: 10px; }
+    .user-info { font-size: 11px; color: #555; }
 
-    .section-title { font-size: 13px; font-weight: 700; margin-bottom: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; }
+    nav { background: #3a80b8; padding: 0 16px; display: flex; align-items: stretch; height: 28px; flex-shrink: 0; }
+    .nav-item { display: flex; align-items: center; padding: 0 14px; font-size: 11px; font-weight: bold; color: #cde; cursor: pointer; text-transform: uppercase; letter-spacing: 0.3px; border-right: 1px solid rgba(255,255,255,0.15); }
+    .nav-item:hover { background: rgba(255,255,255,0.15); color: #fff; }
+    .nav-item.active { background: #e8e8e8; color: #2c6da4; }
 
-    .project-table { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
-    .table-header { display: grid; grid-template-columns: 2fr 1.5fr 1fr 1fr 1.2fr 1fr; padding: 12px 18px; border-bottom: 1px solid var(--border); font-size: 11px; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
-    .table-row { display: grid; grid-template-columns: 2fr 1.5fr 1fr 1fr 1.2fr 1fr; padding: 14px 18px; border-bottom: 1px solid var(--border); align-items: center; transition: background 0.1s; cursor: pointer; }
-    .table-row:last-child { border-bottom: none; }
-    .table-row:hover { background: var(--surface2); }
-    .project-id { font-family: monospace; font-size: 11px; color: var(--accent); font-weight: 700; }
-    .project-name { font-weight: 600; font-size: 12px; }
-    .project-sub { font-size: 10px; color: var(--muted); margin-top: 2px; }
-    .lang-pair { display: flex; align-items: center; gap: 6px; font-size: 11px; }
-    .lang-arrow { color: var(--muted); }
-    .tag { display: inline-flex; align-items: center; padding: 2px 8px; border-radius: 10px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.3px; }
-    .tag-progress { background: rgba(59,130,246,0.15); color: var(--accent); }
-    .tag-review { background: rgba(245,158,11,0.15); color: var(--yellow); }
-    .tag-done { background: rgba(34,197,94,0.15); color: var(--green); }
-    .deadline { font-size: 11px; color: var(--muted); }
-    .progress-bar { background: var(--surface3); border-radius: 4px; height: 5px; overflow: hidden; }
-    .progress-fill { height: 100%; border-radius: 4px; background: var(--accent); }
+    .breadcrumb { background: #f0f0f0; border-bottom: 1px solid #ccc; padding: 5px 16px; font-size: 11px; color: #666; flex-shrink: 0; }
+    .breadcrumb a { color: #2c6da4; text-decoration: none; }
+
+    .page { max-width: 1080px; margin: 0 auto; padding: 16px; width: 100%; }
+
+    /* STATS */
+    .stats-row { display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; margin-bottom: 16px; }
+    .stat-box { background: #fff; border: 1px solid #c8c8c8; padding: 12px 14px; }
+    .stat-box .val { font-size: 24px; font-weight: bold; color: #2c6da4; }
+    .stat-box .lbl { font-size: 10px; color: #777; text-transform: uppercase; letter-spacing: 0.3px; margin-top: 2px; }
+
+    /* TOOLBAR */
+    .section-toolbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+    .section-title { font-size: 13px; font-weight: bold; color: #1a4a7a; border-bottom: 2px solid #2c6da4; padding-bottom: 4px; }
+    .btn-new-project { background: linear-gradient(to bottom, #2c7ac4, #1a5a9e); color: #fff; border: 1px solid #1a4a7a; padding: 5px 14px; font-size: 11px; font-weight: bold; font-family: Arial, sans-serif; cursor: pointer; border-radius: 2px; }
+    .btn-new-project:hover { background: linear-gradient(to bottom, #3a88d2, #2268b0); }
+
+    /* TABLE */
+    .project-table { width: 100%; border-collapse: collapse; background: #fff; border: 1px solid #c8c8c8; }
+    .project-table thead th { background: #d0d8e4; border: 1px solid #b0bcc8; padding: 7px 10px; text-align: left; font-size: 11px; font-weight: bold; color: #1a4a7a; text-transform: uppercase; letter-spacing: 0.3px; }
+    .project-table tbody tr { border-bottom: 1px solid #ddd; cursor: pointer; }
+    .project-table tbody tr:nth-child(even) { background: #f5f8fc; }
+    .project-table tbody tr:hover { background: #ddeeff; }
+    .project-table td { padding: 8px 10px; font-size: 11px; border-right: 1px solid #e8e8e8; }
+    .proj-id { font-family: 'Courier New', monospace; font-size: 10px; color: #2c6da4; font-weight: bold; }
+    .proj-name { font-weight: bold; color: #222; }
+    .proj-sub { font-size: 10px; color: #777; margin-top: 2px; }
+    .lang-cell { font-size: 11px; }
+    .status-badge { display: inline-block; padding: 2px 7px; border: 1px solid; border-radius: 2px; font-size: 10px; font-weight: bold; }
+    .s-done { background: #e0f5e0; border-color: #4a9a4a; color: #2a6a2a; }
+    .s-progress { background: #ddeeff; border-color: #4a80c0; color: #1a4a80; }
+    .s-review { background: #fff5d0; border-color: #c8a030; color: #806000; }
+    .progress-bar { height: 8px; background: #e0e0e0; border: 1px solid #ccc; border-radius: 1px; overflow: hidden; margin-bottom: 2px; }
+    .progress-fill { height: 100%; background: #2c6da4; }
+    .progress-text { font-size: 10px; color: #777; }
 
     /* MODAL */
-    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(4px); z-index: 50; align-items: center; justify-content: center; }
+    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 50; align-items: center; justify-content: center; }
     .modal-overlay.open { display: flex; }
-    .modal { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; width: 560px; max-height: 90vh; overflow-y: auto; }
-    .modal::-webkit-scrollbar { width: 6px; }
-    .modal::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
-    .modal-header { padding: 22px 24px 16px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
-    .modal-title { font-size: 16px; font-weight: 800; }
-    .modal-close { cursor: pointer; color: var(--muted); font-size: 18px; line-height: 1; padding: 2px; }
-    .modal-close:hover { color: var(--text); }
-    .modal-body { padding: 22px 24px; display: flex; flex-direction: column; gap: 16px; }
-    .form-group { display: flex; flex-direction: column; gap: 6px; }
-    .form-group.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-    .form-label { font-size: 11px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; }
-    .form-input, .form-select, .form-textarea { background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px; font-size: 13px; color: var(--text); outline: none; width: 100%; transition: border-color 0.15s; font-family: inherit; }
-    .form-input:focus, .form-select:focus, .form-textarea:focus { border-color: var(--accent); }
-    .form-select option { background: var(--surface2); }
-    .form-textarea { resize: vertical; min-height: 90px; }
-    .modal-footer { padding: 16px 24px 22px; border-top: 1px solid var(--border); display: flex; gap: 10px; justify-content: flex-end; }
-    .btn-cancel { background: var(--surface2); color: var(--muted); border: 1px solid var(--border); padding: 9px 18px; border-radius: 8px; font-size: 12px; font-weight: 600; cursor: pointer; }
-    .btn-submit { background: var(--accent); color: #fff; border: none; padding: 9px 20px; border-radius: 8px; font-size: 12px; font-weight: 700; cursor: pointer; transition: all 0.15s; }
-    .btn-submit:hover { background: var(--accent2); }
+    .modal { background: #f0f0f0; border: 2px solid #2c6da4; width: 540px; max-height: 90vh; overflow-y: auto; box-shadow: 4px 4px 16px rgba(0,0,0,0.3); }
+    .modal-titlebar { background: #1a4a7a; color: #fff; padding: 8px 14px; display: flex; align-items: center; justify-content: space-between; font-size: 13px; font-weight: bold; }
+    .modal-close { cursor: pointer; font-size: 16px; opacity: 0.8; }
+    .modal-close:hover { opacity: 1; }
+    .modal-body { padding: 16px; background: #f5f5f5; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 10px; }
+    .form-row.single { grid-template-columns: 1fr; }
+    .form-group { display: flex; flex-direction: column; gap: 3px; }
+    .form-label { font-size: 11px; font-weight: bold; color: #333; }
+    .form-label .req { color: #c00; }
+    .form-input, .form-select, .form-textarea {
+      background: #fff; border: 1px solid #aaa;
+      padding: 5px 8px; font-size: 12px; font-family: Arial, sans-serif;
+      color: #222; outline: none; width: 100%;
+      border-radius: 1px;
+    }
+    .form-input:focus, .form-select:focus, .form-textarea:focus { border-color: #2c6da4; outline: 1px solid #2c6da4; }
+    .form-select option { background: #fff; }
+    .form-textarea { resize: vertical; min-height: 80px; font-size: 11px; }
+    .modal-footer { background: #e0e0e0; border-top: 2px solid #2c6da4; padding: 10px 16px; display: flex; gap: 8px; justify-content: flex-end; }
+    .btn-corp { padding: 6px 16px; font-size: 11px; font-family: Arial, sans-serif; font-weight: bold; cursor: pointer; border-radius: 2px; border: 1px solid; }
+    .btn-ok { background: linear-gradient(to bottom, #2c7ac4, #1a5a9e); border-color: #1a4a7a; color: #fff; }
+    .btn-ok:hover { background: linear-gradient(to bottom, #3a88d2, #2268b0); }
+    .btn-cancel-corp { background: linear-gradient(to bottom, #f5f5f5, #e0e0e0); border-color: #aaa; color: #333; }
+    .btn-cancel-corp:hover { background: linear-gradient(to bottom, #eee, #d0d0d0); }
 
-    /* SUCCESS SCREEN */
-    .success-screen { display: none; flex-direction: column; align-items: center; justify-content: center; padding: 40px 24px; gap: 16px; text-align: center; }
-    .success-screen.visible { display: flex; }
-    .success-icon { font-size: 48px; }
-    .success-title { font-size: 20px; font-weight: 800; }
-    .success-id { font-family: monospace; font-size: 22px; font-weight: 700; color: var(--accent); background: rgba(59,130,246,0.1); border: 1px solid rgba(59,130,246,0.3); padding: 10px 24px; border-radius: 8px; }
-    .success-sub { font-size: 12px; color: var(--muted); max-width: 340px; line-height: 1.6; }
-    .btn-close-success { background: var(--accent); color: #fff; border: none; padding: 10px 24px; border-radius: 8px; font-size: 13px; font-weight: 700; cursor: pointer; margin-top: 8px; }
+    /* SUCCESS */
+    .success-box { padding: 24px; text-align: center; display: none; background: #f5f5f5; }
+    .success-box.visible { display: block; }
+    .success-icon { font-size: 40px; margin-bottom: 10px; }
+    .success-title { font-size: 16px; font-weight: bold; color: #1a4a7a; margin-bottom: 8px; }
+    .success-id-box { background: #fff; border: 2px solid #2c6da4; display: inline-block; padding: 8px 20px; font-family: 'Courier New', monospace; font-size: 18px; font-weight: bold; color: #1a4a7a; margin: 8px 0 12px; }
+    .success-detail { background: #e8f0f8; border: 1px solid #b8cfe0; padding: 8px 12px; font-size: 11px; color: #333; text-align: left; margin-top: 8px; line-height: 1.8; }
 
-    .toast { position: fixed; bottom: 24px; right: 24px; background: var(--surface3); border: 1px solid var(--border); color: var(--text); padding: 10px 16px; border-radius: 8px; font-size: 12px; font-weight: 500; opacity: 0; transform: translateY(8px); transition: all 0.2s; pointer-events: none; z-index: 200; display: flex; align-items: center; gap: 8px; }
+    .toast { position: fixed; bottom: 20px; right: 20px; background: #1a4a7a; color: #fff; padding: 10px 16px; font-size: 12px; font-family: Arial, sans-serif; opacity: 0; transform: translateY(6px); transition: all 0.2s; pointer-events: none; z-index: 200; border-left: 4px solid #4aaa4a; }
     .toast.show { opacity: 1; transform: translateY(0); }
   </style>
 </head>
 <body>
+<div class="top-banner"></div>
 <header>
   <div class="logo">
     <div class="logo-mark">AL</div>
-    <span>AgenceLocal</span>
-    <span class="logo-sub">— Translation Portal</span>
+    <div>
+      <div class="logo-text">AgenceLocal</div>
+    </div>
   </div>
-  <div class="header-actions">
-    <button class="btn-new" onclick="openModal()">+ Nouveau projet</button>
-    <div class="avatar">NT</div>
+  <span class="logo-sub">| Portail de Traduction — Client Pierre Fabre</span>
+  <div class="header-right">
+    <span class="user-info">Connecté : <strong>N. Taborisky</strong> &nbsp;|&nbsp; Pierre Fabre Marketing Global &nbsp;|&nbsp; <a href="#" style="color:#2c6da4;font-size:11px">Déconnexion</a></span>
   </div>
 </header>
+<nav>
+  <div class="nav-item active">📋 Mes projets</div>
+  <div class="nav-item">📂 Archives</div>
+  <div class="nav-item">💬 Messages</div>
+  <div class="nav-item">📊 Statistiques</div>
+</nav>
+<div class="breadcrumb"><a href="#">Accueil</a> &rsaquo; <a href="#">Projets</a> &rsaquo; Tous les projets actifs</div>
 
 <div class="page">
-  <div class="page-header">
-    <div>
-      <div class="page-title">Projets de traduction</div>
-      <div class="page-subtitle">Client : Pierre Fabre · Campagnes en cours et terminées</div>
-    </div>
-    <button class="btn-new" onclick="openModal()">+ Nouveau projet</button>
-  </div>
-
   <div class="stats-row">
-    <div class="stat-card"><div class="stat-val" style="color:var(--accent)">12</div><div class="stat-label">Projets actifs</div></div>
-    <div class="stat-card"><div class="stat-val" style="color:var(--green)">47</div><div class="stat-label">Assets livrés ce mois</div></div>
-    <div class="stat-card"><div class="stat-val" style="color:var(--yellow)">8</div><div class="stat-label">En attente de revue</div></div>
-    <div class="stat-card"><div class="stat-val">18</div><div class="stat-label">Langues actives</div></div>
+    <div class="stat-box"><div class="val">12</div><div class="lbl">Projets en cours</div></div>
+    <div class="stat-box"><div class="val" style="color:#2a7a2a">47</div><div class="lbl">Assets livrés ce mois</div></div>
+    <div class="stat-box"><div class="val" style="color:#806000">8</div><div class="lbl">En attente de revue</div></div>
+    <div class="stat-box"><div class="val">18</div><div class="lbl">Langues actives</div></div>
   </div>
 
-  <div class="section-title">Projets récents</div>
-  <div class="project-table">
-    <div class="table-header">
-      <div>Projet</div>
-      <div>Campagne / Marque</div>
-      <div>Langues</div>
-      <div>Statut</div>
-      <div>Progression</div>
-      <div>Deadline</div>
-    </div>
-    <div class="table-row" id="row-pf046">
-      <div><div class="project-id">PF-2025-046</div><div class="project-name">Avène Summer 25 — Meta</div><div class="project-sub">8 assets · Marché Italie</div></div>
-      <div><div class="project-name">Avène</div><div class="project-sub">Summer 2025</div></div>
-      <div class="lang-pair">🇬🇧 EN <span class="lang-arrow">→</span> 🇮🇹 IT</div>
-      <div><span class="tag tag-done">Livré</span></div>
-      <div><div class="progress-bar"><div class="progress-fill" style="width:100%;background:#22c55e"></div></div><span style="font-size:10px;color:var(--green)">100%</span></div>
-      <div class="deadline">12 juin 2025</div>
-    </div>
-    <div class="table-row" id="row-pf045">
-      <div><div class="project-id">PF-2025-045</div><div class="project-name">Ducray Dandruff — Social</div><div class="project-sub">5 assets · Marché Allemagne</div></div>
-      <div><div class="project-name">Ducray</div><div class="project-sub">Anti-Dandruff Q2</div></div>
-      <div class="lang-pair">🇬🇧 EN <span class="lang-arrow">→</span> 🇩🇪 DE</div>
-      <div><span class="tag tag-review">En revue</span></div>
-      <div><div class="progress-bar"><div class="progress-fill" style="width:80%"></div></div><span style="font-size:10px;color:var(--muted)">80%</span></div>
-      <div class="deadline">20 juin 2025</div>
-    </div>
-    <div class="table-row" id="row-pf044">
-      <div><div class="project-id">PF-2025-044</div><div class="project-name">Klorane SS25 — iRetail</div><div class="project-sub">12 assets · Marché Brésil</div></div>
-      <div><div class="project-name">Klorane</div><div class="project-sub">SS25</div></div>
-      <div class="lang-pair">🇬🇧 EN <span class="lang-arrow">→</span> 🇧🇷 PT</div>
-      <div><span class="tag tag-progress">En cours</span></div>
-      <div><div class="progress-bar"><div class="progress-fill" style="width:45%"></div></div><span style="font-size:10px;color:var(--muted)">45%</span></div>
-      <div class="deadline">30 juin 2025</div>
-    </div>
+  <div class="section-toolbar">
+    <div class="section-title">📋 Projets de traduction — Pierre Fabre</div>
+    <button class="btn-new-project" onclick="openModal()">+ Nouveau projet</button>
   </div>
+
+  <table class="project-table" id="projectTable">
+    <thead>
+      <tr>
+        <th>N° Projet</th>
+        <th>Nom / Description</th>
+        <th>Marque</th>
+        <th>Langues</th>
+        <th>Statut</th>
+        <th>Progression</th>
+        <th>Deadline</th>
+        <th>Resp.</th>
+      </tr>
+    </thead>
+    <tbody id="projectBody">
+      <tr>
+        <td class="proj-id">PF-2025-046</td>
+        <td><div class="proj-name">Avène Summer 25 — Meta Social</div><div class="proj-sub">8 assets — Marché Italie</div></td>
+        <td>Avène</td>
+        <td class="lang-cell">🇬🇧 EN → 🇮🇹 IT</td>
+        <td><span class="status-badge s-done">Livré</span></td>
+        <td><div class="progress-bar"><div class="progress-fill" style="width:100%;background:#4a9a4a"></div></div><div class="progress-text">100% — 12 juin 2025</div></td>
+        <td>12/06/2025</td>
+        <td>M. Rossi</td>
+      </tr>
+      <tr>
+        <td class="proj-id">PF-2025-045</td>
+        <td><div class="proj-name">Ducray Dandruff — Social</div><div class="proj-sub">5 assets — Marché Allemagne</div></td>
+        <td>Ducray</td>
+        <td class="lang-cell">🇬🇧 EN → 🇩🇪 DE</td>
+        <td><span class="status-badge s-review">En revue</span></td>
+        <td><div class="progress-bar"><div class="progress-fill" style="width:80%"></div></div><div class="progress-text">80%</div></td>
+        <td>20/06/2025</td>
+        <td>K. Müller</td>
+      </tr>
+      <tr>
+        <td class="proj-id">PF-2025-044</td>
+        <td><div class="proj-name">Klorane SS25 — iRetail Carousel</div><div class="proj-sub">12 assets — Marché Brésil</div></td>
+        <td>Klorane</td>
+        <td class="lang-cell">🇬🇧 EN → 🇧🇷 PT</td>
+        <td><span class="status-badge s-progress">En cours</span></td>
+        <td><div class="progress-bar"><div class="progress-fill" style="width:45%"></div></div><div class="progress-text">45%</div></td>
+        <td>30/06/2025</td>
+        <td>A. Silva</td>
+      </tr>
+    </tbody>
+  </table>
 </div>
 
 <!-- MODAL -->
-<div class="modal-overlay" id="modalOverlay" onclick="handleOverlayClick(event)">
+<div class="modal-overlay" id="modalOverlay" onclick="maybeClose(event)">
   <div class="modal" onclick="event.stopPropagation()">
-    <div id="modalForm">
-      <div class="modal-header">
-        <span class="modal-title">Nouveau projet de traduction</span>
+    <div id="modalFormWrap">
+      <div class="modal-titlebar">
+        <span>Création d'un nouveau projet de traduction</span>
         <span class="modal-close" onclick="closeModal()">✕</span>
       </div>
       <div class="modal-body">
-        <div class="form-group">
-          <label class="form-label">Client</label>
-          <input class="form-input" id="f-client" type="text" value="Pierre Fabre" />
-        </div>
-        <div class="form-group two-col">
+        <div class="form-row single">
           <div class="form-group">
-            <label class="form-label">Marque</label>
+            <label class="form-label">Client <span class="req">*</span></label>
+            <input class="form-input" id="f-client" type="text" value="Pierre Fabre" readonly style="background:#eee;color:#666" />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Marque <span class="req">*</span></label>
             <select class="form-select" id="f-brand">
               <option value="Avène" selected>Avène</option>
               <option value="Ducray">Ducray</option>
@@ -178,24 +209,26 @@
             </select>
           </div>
           <div class="form-group">
-            <label class="form-label">Campagne</label>
+            <label class="form-label">Campagne <span class="req">*</span></label>
             <input class="form-input" id="f-campaign" type="text" value="Summer 2025" />
           </div>
         </div>
-        <div class="form-group">
-          <label class="form-label">Liste des assets (un par ligne ou lien DAM)</label>
-          <textarea class="form-textarea" id="f-assets" placeholder="https://dam.pierre-fabre.com/assets/1/AVENE_SUMMER25_META_1080x1080_EN.jpg&#10;https://dam.pierre-fabre.com/assets/2/AVENE_SUMMER25_META_STORY_1080x1920_EN.jpg&#10;https://dam.pierre-fabre.com/assets/3/AVENE_SUMMER25_TIKTOK_9x16_EN.mp4&#10;https://dam.pierre-fabre.com/assets/4/AVENE_SUMMER25_IRETAIL_CAROUSEL_EN.jpg"></textarea>
-        </div>
-        <div class="form-group two-col">
+        <div class="form-row single">
           <div class="form-group">
-            <label class="form-label">Langue source</label>
+            <label class="form-label">Liste des assets / Liens DAM <span class="req">*</span></label>
+            <textarea class="form-textarea" id="f-assets" placeholder="https://dam.pierre-fabre.com/assets/1/AVENE_SUMMER25_META_1080x1080_EN.jpg&#10;https://dam.pierre-fabre.com/assets/2/AVENE_SUMMER25_META_STORY_1080x1920_EN.jpg&#10;https://dam.pierre-fabre.com/assets/3/AVENE_SUMMER25_TIKTOK_9x16_EN.mp4&#10;https://dam.pierre-fabre.com/assets/4/AVENE_SUMMER25_IRETAIL_CAROUSEL_EN.jpg"></textarea>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Langue source <span class="req">*</span></label>
             <select class="form-select" id="f-src">
               <option value="EN" selected>🇬🇧 Anglais (EN)</option>
               <option value="FR">🇫🇷 Français (FR)</option>
             </select>
           </div>
           <div class="form-group">
-            <label class="form-label">Langue cible</label>
+            <label class="form-label">Langue cible <span class="req">*</span></label>
             <select class="form-select" id="f-tgt">
               <option value="ES" selected>🇪🇸 Espagnol (ES)</option>
               <option value="FR">🇫🇷 Français (FR)</option>
@@ -204,10 +237,11 @@
               <option value="PT">🇧🇷 Portugais (PT)</option>
               <option value="ZH">🇨🇳 Chinois (ZH)</option>
               <option value="AR">🇸🇦 Arabe (AR)</option>
+              <option value="JA">🇯🇵 Japonais (JA)</option>
             </select>
           </div>
         </div>
-        <div class="form-group two-col">
+        <div class="form-row">
           <div class="form-group">
             <label class="form-label">Deadline souhaitée</label>
             <input class="form-input" id="f-deadline" type="date" value="2025-07-10" />
@@ -215,100 +249,85 @@
           <div class="form-group">
             <label class="form-label">Priorité</label>
             <select class="form-select" id="f-priority">
-              <option value="normal" selected>Normale</option>
-              <option value="high">Haute</option>
-              <option value="urgent">Urgente</option>
+              <option value="normale" selected>Normale</option>
+              <option value="haute">Haute</option>
+              <option value="urgente">Urgente</option>
             </select>
           </div>
         </div>
-        <div class="form-group">
-          <label class="form-label">Instructions spéciales</label>
-          <textarea class="form-textarea" id="f-instructions" style="min-height:70px" placeholder="Convention de nommage : ajouter suffixe _ES au nom de fichier. Conserver les termes techniques en anglais (ex: Thermal Spring Water). Marché : Espagne."></textarea>
+        <div class="form-row single">
+          <div class="form-group">
+            <label class="form-label">Instructions spéciales / Conventions de nommage</label>
+            <textarea class="form-textarea" id="f-instructions" style="min-height:60px" placeholder="Ex : Ajouter suffixe _ES au nom de fichier. Conserver les termes techniques en anglais. Marché cible : Espagne."></textarea>
+          </div>
         </div>
       </div>
       <div class="modal-footer">
-        <button class="btn-cancel" onclick="closeModal()">Annuler</button>
-        <button class="btn-submit" onclick="submitForm()">Créer le projet →</button>
+        <button class="btn-corp btn-cancel-corp" onclick="closeModal()">Annuler</button>
+        <button class="btn-corp btn-ok" id="submitBtn" onclick="submitForm()">Créer le projet »</button>
       </div>
     </div>
-    <div class="success-screen" id="successScreen">
+    <div class="success-box" id="successBox">
       <div class="success-icon">✅</div>
       <div class="success-title">Projet créé avec succès</div>
-      <div class="success-id" id="successId">PF-2025-047</div>
-      <div class="success-sub">Votre projet de traduction a été soumis. L'équipe de traduction a été notifiée et commencera le travail dans les prochaines heures.</div>
-      <div style="display:flex;flex-direction:column;gap:8px;width:100%;max-width:320px;margin-top:8px">
-        <div style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:12px;font-size:11px;">
-          <div style="color:var(--muted);margin-bottom:4px">Référence projet</div>
-          <div style="font-family:monospace;color:var(--accent);font-weight:700" id="successRef"></div>
-        </div>
+      <div>Votre numéro de projet :</div>
+      <div class="success-id-box" id="successId">PF-2025-047</div>
+      <div class="success-detail" id="successDetail"></div>
+      <div style="margin-top:14px">
+        <button class="btn-corp btn-ok" onclick="closeModal()">Fermer</button>
       </div>
-      <button class="btn-close-success" onclick="closeModal()">Fermer</button>
     </div>
   </div>
 </div>
 
-<div class="toast" id="toast"><span style="color:#22c55e">✓</span><span id="toastMsg"></span></div>
+<div class="toast" id="toast"><span id="toastMsg"></span></div>
 
 <script>
-let projectCounter = 47;
-
-function openModal() {
-  document.getElementById('modalOverlay').classList.add('open');
-  document.getElementById('modalForm').style.display='block';
-  document.getElementById('successScreen').classList.remove('visible');
-}
-
-function closeModal() {
-  document.getElementById('modalOverlay').classList.remove('open');
-}
-
-function handleOverlayClick(e) {
-  if(e.target === document.getElementById('modalOverlay')) closeModal();
-}
+let counter = 47;
+function openModal() { document.getElementById('modalOverlay').classList.add('open'); }
+function closeModal() { document.getElementById('modalOverlay').classList.remove('open'); document.getElementById('successBox').classList.remove('visible'); document.getElementById('modalFormWrap').style.display='block'; }
+function maybeClose(e) { if(e.target===document.getElementById('modalOverlay')) closeModal(); }
 
 function submitForm() {
-  const brand = document.getElementById('f-brand').value;
-  const campaign = document.getElementById('f-campaign').value;
-  const src = document.getElementById('f-src').value;
-  const tgt = document.getElementById('f-tgt').value;
-  const deadline = document.getElementById('f-deadline').value;
+  const brand=document.getElementById('f-brand').value;
+  const campaign=document.getElementById('f-campaign').value;
+  const src=document.getElementById('f-src').value;
+  const tgt=document.getElementById('f-tgt').value;
+  const deadline=document.getElementById('f-deadline').value;
+  const priority=document.getElementById('f-priority').value;
+  const instructions=document.getElementById('f-instructions').value;
 
-  const btn = document.querySelector('.btn-submit');
-  btn.innerHTML = 'Création en cours…';
-  btn.disabled = true;
+  const btn=document.getElementById('submitBtn');
+  btn.innerHTML='⏳ Création...'; btn.disabled=true;
 
-  setTimeout(() => {
-    const id = 'PF-2025-0'+projectCounter;
-    projectCounter++;
+  setTimeout(()=>{
+    const id='PF-2025-0'+counter++;
+    document.getElementById('successId').textContent=id;
+    document.getElementById('successDetail').innerHTML=
+      `<strong>Client :</strong> Pierre Fabre<br>
+       <strong>Marque :</strong> ${brand} — ${campaign}<br>
+       <strong>Langues :</strong> ${src} → ${tgt}<br>
+       <strong>Deadline :</strong> ${deadline}<br>
+       <strong>Priorité :</strong> ${priority}<br>
+       <strong>Instructions :</strong> ${instructions||'Aucune'}`;
+    document.getElementById('modalFormWrap').style.display='none';
+    document.getElementById('successBox').classList.add('visible');
+    btn.innerHTML='Créer le projet »'; btn.disabled=false;
 
-    document.getElementById('successId').textContent = id;
-    document.getElementById('successRef').textContent = `${id} · ${brand} · ${campaign} · ${src}→${tgt} · Deadline: ${deadline}`;
-
-    document.getElementById('modalForm').style.display='none';
-    document.getElementById('successScreen').classList.add('visible');
-
-    btn.innerHTML = 'Créer le projet →';
-    btn.disabled = false;
-
-    // Add row to table
-    const table = document.querySelector('.project-table');
-    const newRow = document.createElement('div');
-    newRow.className = 'table-row';
-    newRow.innerHTML = `
-      <div><div class="project-id">${id}</div><div class="project-name">${brand} ${campaign} — Localisation</div><div class="project-sub">4 assets · Marché ${tgt}</div></div>
-      <div><div class="project-name">${brand}</div><div class="project-sub">${campaign}</div></div>
-      <div class="lang-pair">🇬🇧 ${src} <span class="lang-arrow">→</span> ${tgt}</div>
-      <div><span class="tag tag-progress">En cours</span></div>
-      <div><div class="progress-bar"><div class="progress-fill" style="width:5%"></div></div><span style="font-size:10px;color:var(--muted)">5%</span></div>
-      <div class="deadline">${deadline}</div>`;
-    table.appendChild(newRow);
+    // Add row
+    const tbody=document.getElementById('projectBody');
+    const newRow=document.createElement('tr');
+    newRow.innerHTML=`
+      <td class="proj-id">${id}</td>
+      <td><div class="proj-name">${brand} ${campaign} — Localisation</div><div class="proj-sub">4 assets — Marché ${tgt}</div></td>
+      <td>${brand}</td>
+      <td class="lang-cell">🇬🇧 ${src} → ${tgt}</td>
+      <td><span class="status-badge s-progress">En cours</span></td>
+      <td><div class="progress-bar"><div class="progress-fill" style="width:3%"></div></div><div class="progress-text">3%</div></td>
+      <td>${deadline}</td>
+      <td>—</td>`;
+    tbody.insertBefore(newRow, tbody.firstChild);
   }, 1200);
-}
-
-function showToast(msg) {
-  const t=document.getElementById('toast');
-  document.getElementById('toastMsg').textContent=msg;
-  t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2500);
 }
 </script>
 </body>
